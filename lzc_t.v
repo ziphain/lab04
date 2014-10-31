@@ -2,8 +2,19 @@ module stimulus;
 	parameter cyc = 10;
 	parameter delay = 1;
 
+	parameter fsdb_filename = "lzc.fsdb"; 
+	parameter width = `WIDTH;
+	parameter word = `WORD;
+	parameter debug = `DEBUG;
+	parameter pattern = "lzc_w4c4.dat";
+
+
 	reg clk, rst_n, ivalid, mode;
-	reg [7:0] data;
+	reg [15:0] data;
+
+	reg [128*8:0] fsdb;
+	// should add reg [] pattern
+	// to do ...
 
 	wire ovalid;
 	wire [5:0] zeros;
@@ -21,10 +32,17 @@ module stimulus;
 	always #(cyc/2) clk = ~clk;
 
 		initial begin
-			$fsdbDumpfile("lzc.fsdb");
+			
+			if ($value$plusargs("fsdb=%s", fsdb)) begin
+				$fsdbDumpfile(fsdb);
+			end else begin
+				$fsdbDumpfile("lzc.fsdb");
+			end
+			
+			//$fsdbDumpfile(fsdb);
 			$fsdbDumpvars;
 
-			$monitor($time, " CLK=%b RST_N=%b IVALID=%b DATA=%d MODE=%d | OVALID=%b ZEROS=%d ", clk, rst_n, ivalid, data, mode, ovalid, zeros);
+			$monitor($time, " CLK=%b RST_N=%b IVALID=%b DATA=%d MODE=%d | OVALID=%b ZEROS=%d width=%d word=%d", clk, rst_n, ivalid, data, mode, ovalid, zeros, width, word);
 		end
 
 		initial begin
@@ -54,79 +72,6 @@ module stimulus;
 			#(cyc) nop;
 			#(cyc);
 //
-			#(cyc) load; data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc) nop;
-			#(cyc);
-
-			#(cyc) load; data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd64);
-			#(cyc);		data_in(8'd0);
-			#(cyc) nop;
-			#(cyc);
-
-			#(cyc) load; data_in(8'd128);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd2);
-			#(cyc) nop;
-			#(cyc);
-
-			#(cyc) load; data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc) nop;
-			#(cyc);
-
-			mode = 1;
-
-
-// Non-continue input 4-bytes
-			#(cyc) load; data_in(8'd1);
-			
-			#(cyc); data_in(8'd0);
-
-			#(cyc) nop;
-			#(cyc) load; data_in(8'd1);
-			
-			#(cyc) nop;
-			#(cyc) load; data_in(8'd32);
-			
-			#(cyc) nop;
-			#(cyc);
-//
-
-			#(cyc) load; data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd16);
-			#(cyc);		data_in(8'd0);
-			#(cyc) nop;
-			#(cyc);
-
-			#(cyc) load; data_in(8'd0);
-			#(cyc);		data_in(8'd128);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc) nop;
-			#(cyc);
-
-			#(cyc) load; data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd64);
-			#(cyc);		data_in(8'd0);
-			#(cyc) nop;
-			#(cyc);
-
-			#(cyc) load; data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc);		data_in(8'd0);
-			#(cyc) nop;
-			#(cyc);
 
 			#(cyc*8);
 			$finish;

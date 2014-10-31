@@ -1,8 +1,12 @@
-module LZC (
+module LZC #(
+	parameter width = `WIDTH,
+	parameter word = `WORD
+	//parameter cycle = `CYCLE
+)(
 	input wire CLK,
 	input wire RST_N,
 	input wire IVALID,
-	input wire [7:0] DATA,
+	input wire [width-1:0] DATA,
 	input wire MODE,
 	output reg [5:0] ZEROS,
 	output reg OVALID
