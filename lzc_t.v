@@ -22,7 +22,7 @@ module stimulus;
 	reg [128*8 - 1:0] golden;
 
 	wire ovalid;
-	wire [5:0] zeros;
+	wire [width * word - 1:0] zeros;
 
 	LZC lzc01(
 			.CLK(clk),
@@ -65,8 +65,8 @@ module stimulus;
 			#(cyc*2);
 			if ($value$plusargs("pattern=%s", pattern)) begin
 				$readmemb(pattern, memory);
-				$readmemb(golden, memory_gold);
-				for (i = 0; i < 30; i = i +1) begin
+				//$readmemb(golden, memory_gold);
+				for (i = 0; i < 100; i = i +1) begin
 					//$display("Memory [%d] = %b", i, memory[i]);
 					instru(memory[i]);
 				end
@@ -118,15 +118,16 @@ module stimulus;
 			input [width - 1 +2:0] micro_instr;
 			begin
 				#(cyc) mode = micro_instr[width - 1 + 2];
-				#(cyc) {ivalid, data} = micro_instr[width:0];
+				ivalid = micro_instr[width];
+				data = micro_instr[width-1:0];
 			end
 		endtask
-
+		/*
 		task compare;
 
 			gold_index += 1;
 		endtask
-
+		*/
 
 endmodule
 
