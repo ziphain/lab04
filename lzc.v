@@ -79,7 +79,6 @@ begin
 		//if (MODE) begin
 	end else if (IVALID && !found) begin
 		ZEROS = ZEROS + each_byte_zeros;
-
 	end else begin
 		ZEROS = ZEROS + 0;
 	end
@@ -89,7 +88,7 @@ end
 always @(posedge CLK or negedge RST_N)
 begin
 	if (!RST_N) begin
-		round = 1;
+		round = 0;
 	end else if (IVALID) begin
 		round = round + 1;
 	end else begin
@@ -122,14 +121,14 @@ always @(posedge CLK or negedge RST_N) begin
 		end
 
 		ACCU: begin
-			if (round != (word) ) begin
+			if (round != word) begin
+				/*
 				if (finish) begin
 					state_next = FINISH;
 				end else begin
 					state_next = ACCU;
 				end
-
-
+				*/
 				if (MODE) begin
 					if (found && IVALID) begin
 						//ZEROS = counter;
@@ -142,6 +141,7 @@ always @(posedge CLK or negedge RST_N) begin
 					state_next = ACCU;
 				end
 			end else begin
+
 				//ZEROS = counter;
 				OVALID = 1'b1;
 				state_next = FINISH;
@@ -161,7 +161,7 @@ always @(posedge CLK or negedge RST_N) begin
 			notzero = 0;
 			found = 0;
 			counter = 0;
-			round = 1;
+			round = 0;
 			state_next = IDLE;
 		end
 

@@ -10,19 +10,21 @@ module stimulus;
 
 	// read memory
 	reg [width - 1 + 2:0] memory[0:15000];
-	reg [width - 1 + 2:0] memory_gold[0:3000];
+	reg [5:0] memory_gold[0:3000];
 	integer i; // memory
-	integer gold_index; 
+	integer gold_index = 0; 
 
 	reg clk, rst_n, ivalid, mode;
 	reg [width - 1:0] data;
+	reg [5:0] golden_value;
+	reg [10:0] match_counter = 0;
 
 	reg [128*8 - 1:0] fsdb;    // why 128????  128*8=1024
 	reg [128*8 - 1:0] pattern;
 	reg [128*8 - 1:0] golden;
 
 	wire ovalid;
-	wire [width * word - 1:0] zeros;
+	wire [8:0] zeros; // max zeros=256 (16 by 16)
 
 	LZC lzc01(
 			.CLK(clk),
@@ -65,11 +67,25 @@ module stimulus;
 			#(cyc*2);
 			if ($value$plusargs("pattern=%s", pattern)) begin
 				$readmemb(pattern, memory);
-				//$readmemb(golden, memory_gold);
-				for (i = 0; i < 100; i = i +1) begin
+				if ($value$plusargs("golden=%s", golden)) begin
+					$readmemb(golden, memory_gold);
+				end
+				
+				//
+				for (i = 0; i < 10000; i = i +1) begin
 					//$display("Memory [%d] = %b", i, memory[i]);
 					instru(memory[i]);
-				end
+					//get_golden(memory_gold[gold_index]);
+					if (ovalid) begin
+						get_golden(memory_gold[gold_index]);
+						gold_index = gold_index + 1;
+
+						if (zeros == golden_value) begin
+							match_counter = match_counter + 1;
+						end
+
+					end
+				end // end for loop
 			end
 
 			
@@ -120,8 +136,18 @@ module stimulus;
 				#(cyc) mode = micro_instr[width - 1 + 2];
 				ivalid = micro_instr[width];
 				data = micro_instr[width-1:0];
+
+				
 			end
 		endtask
+
+		task get_golden;
+			input [5:0] golden_instr;
+			begin
+				golden_value = golden_instr[5:0];
+			end
+		endtask
+
 		/*
 		task compare;
 
