@@ -34,28 +34,52 @@ always @* begin
 		notzero = 0;
 	end else if (DATA[7] == 1'b1) begin
 		each_byte_zeros = 0;
-		notzero = IVALID ? 1'b1:0;
+		//notzero = IVALID ? 1'b1:0;
+		if (IVALID) begin
+			notzero = 1'b1;
+		end
 	end else if (DATA[6] == 1'b1) begin
 		each_byte_zeros = 1;
-		notzero = IVALID ? 1'b1:0;
+		//notzero = IVALID ? 1'b1:0;
+		if (IVALID) begin
+			notzero = 1'b1;
+		end
 	end else if (DATA[5] == 1'b1) begin
 		each_byte_zeros = 2;
-		notzero = IVALID ? 1'b1:0;
+		//notzero = IVALID ? 1'b1:0;
+		if (IVALID) begin
+			notzero = 1'b1;
+		end
 	end else if (DATA[4] == 1'b1) begin
 		each_byte_zeros = 3;
-		notzero = IVALID ? 1'b1:0;
+		//notzero = IVALID ? 1'b1:0;
+		if (IVALID) begin
+			notzero = 1'b1;
+		end
 	end else if (DATA[3] == 1'b1) begin
 		each_byte_zeros = 4;
-		notzero = IVALID ? 1'b1:0;
+		//notzero = IVALID ? 1'b1:0;
+		if (IVALID) begin
+			notzero = 1'b1;
+		end
 	end else if (DATA[2] == 1'b1) begin
 		each_byte_zeros = 5;
-		notzero = IVALID ? 1'b1:0;
+		//notzero = IVALID ? 1'b1:0;
+		if (IVALID) begin
+			notzero = 1'b1;
+		end
 	end else if (DATA[1] == 1'b1) begin
 		each_byte_zeros = 6;
-		notzero = IVALID ? 1'b1:0;
+		//notzero = IVALID ? 1'b1:0;
+		if (IVALID) begin
+			notzero = 1'b1;
+		end
 	end else if (DATA[0] == 1'b1) begin
 		each_byte_zeros = 7;
-		notzero = IVALID ? 1'b1:0;
+		//notzero = IVALID ? 1'b1:0;
+		if (IVALID) begin
+			notzero = 1'b1;
+		end
 	end else begin
 		each_byte_zeros = 8;
 	end
@@ -121,14 +145,11 @@ always @(posedge CLK or negedge RST_N) begin
 		end
 
 		ACCU: begin
-			if (round != word) begin
-				/*
-				if (finish) begin
-					state_next = FINISH;
-				end else begin
-					state_next = ACCU;
-				end
-				*/
+			if (round == word) begin
+				OVALID = 1'b1;
+				state_next = FINISH;
+
+			end else begin
 				if (MODE) begin
 					if (found && IVALID) begin
 						//ZEROS = counter;
@@ -138,13 +159,12 @@ always @(posedge CLK or negedge RST_N) begin
 						state_next = ACCU;
 					end
 				end else begin // mode = 0
-					state_next = ACCU;
+					if (round == word) begin
+						state_next = FINISH;
+					end else begin
+						state_next = ACCU;
+					end
 				end
-			end else begin
-
-				//ZEROS = counter;
-				OVALID = 1'b1;
-				state_next = FINISH;
 			end
 
 		end
