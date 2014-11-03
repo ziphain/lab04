@@ -19,6 +19,9 @@ ifdef pattern
 ARGUMENT_5 += +pattern=$(pattern)
 endif
 
+ifdef golden
+ARGUMENT_6 += +golden=$(golden)
+endif
 
 HEADER = header.v
 
@@ -37,7 +40,7 @@ RM	=	-rm	-rf
 all :: sim
 
 sim :
-	$(VLOG) $(HEADER) $(SRC) $(VLOGARG) $(ARGUMENT_1) $(ARGUMENT_2) $(ARGUMENT_3) $(ARGUMENT_4) $(ARGUMENT_5)
+	$(VLOG) $(HEADER) $(SRC) $(VLOGARG) $(ARGUMENT_1) $(ARGUMENT_2) $(ARGUMENT_3) $(ARGUMENT_4) $(ARGUMENT_5) $(ARGUMENT_6)
 
 clean :
 	$(RM)	$(TMPFILE)
