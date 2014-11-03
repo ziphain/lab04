@@ -10,13 +10,13 @@ module stimulus;
 
 	// read memory
 	reg [width - 1 + 2:0] memory[0:15000];
-	reg [5:0] memory_gold[0:3000];
+	reg [8:0] memory_gold[0:3000];
 	integer i; // memory
 	integer gold_index = 0; 
 
 	reg clk, rst_n, ivalid, mode;
 	reg [width - 1:0] data;
-	reg [5:0] golden_value;
+	reg [8:0] golden_value;
 	reg [10:0] match_counter = 0;
 
 	reg [128*8 - 1:0] fsdb;    // why 128????  128*8=1024
@@ -142,9 +142,9 @@ module stimulus;
 		endtask
 
 		task get_golden;
-			input [5:0] golden_instr;
+			input [8:0] golden_instr;
 			begin
-				golden_value = golden_instr[5:0];
+				golden_value = golden_instr[8:0];
 			end
 		endtask
 

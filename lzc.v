@@ -32,6 +32,194 @@ always @* begin
 	if (!RST_N) begin
 		each_byte_zeros = 0;
 		notzero = 0;
+	end else begin
+		// word == 4
+		if (width == 4) begin
+			if (DATA[3] == 1'b1) begin
+				each_byte_zeros = 0;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[2] == 1'b1) begin
+				each_byte_zeros = 1;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[1] == 1'b1) begin
+				each_byte_zeros = 2;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[0] == 1'b1) begin
+				each_byte_zeros = 3;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else begin
+				each_byte_zeros = 4;
+			end
+		// word == 8
+		end else if (width == 8) begin
+			if (DATA[7] == 1'b1) begin
+				each_byte_zeros = 0;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[6] == 1'b1) begin
+				each_byte_zeros = 1;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[5] == 1'b1) begin
+				each_byte_zeros = 2;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[4] == 1'b1) begin
+				each_byte_zeros = 3;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[3] == 1'b1) begin
+				each_byte_zeros = 4;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[2] == 1'b1) begin
+				each_byte_zeros = 5;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[1] == 1'b1) begin
+				each_byte_zeros = 6;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[0] == 1'b1) begin
+				each_byte_zeros = 7;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else begin
+				each_byte_zeros = 8;
+			end
+		// word == 16
+		end else if (width == 16) begin
+			if (DATA[15] == 1'b1) begin
+				each_byte_zeros = 0;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[14] == 1'b1) begin
+				each_byte_zeros = 1;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[13] == 1'b1) begin
+				each_byte_zeros = 2;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[12] == 1'b1) begin
+				each_byte_zeros = 3;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[11] == 1'b1) begin
+				each_byte_zeros = 4;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[10] == 1'b1) begin
+				each_byte_zeros = 5;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[9] == 1'b1) begin
+				each_byte_zeros = 6;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[8] == 1'b1) begin
+				each_byte_zeros = 7;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[7] == 1'b1) begin
+				each_byte_zeros = 8;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[6] == 1'b1) begin
+				each_byte_zeros = 9;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[5] == 1'b1) begin
+				each_byte_zeros = 10;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[4] == 1'b1) begin
+				each_byte_zeros = 11;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[3] == 1'b1) begin
+				each_byte_zeros = 12;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[2] == 1'b1) begin
+				each_byte_zeros = 13;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[1] == 1'b1) begin
+				each_byte_zeros = 14;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else if (DATA[0] == 1'b1) begin
+				each_byte_zeros = 15;
+				//notzero = IVALID ? 1'b1:0;
+				if (IVALID) begin
+					notzero = 1'b1;
+				end
+			end else begin
+				each_byte_zeros = 16;
+			end
+		end
+	end
+
+/*
 	end else if (DATA[7] == 1'b1) begin
 		each_byte_zeros = 0;
 		//notzero = IVALID ? 1'b1:0;
@@ -83,6 +271,7 @@ always @* begin
 	end else begin
 		each_byte_zeros = 8;
 	end
+	*/
 end
 
 // DFF as buffer for 'notzero'
