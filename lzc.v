@@ -1,7 +1,6 @@
 module LZC #(
 	parameter width = `WIDTH,
 	parameter word = `WORD
-	//parameter cycle = `CYCLE
 )(
 	input wire CLK,
 	input wire RST_N,
@@ -15,17 +14,12 @@ module LZC #(
 wire cumulative, finish; 
 reg found, final, notzero, already_out, early_terminal;
 reg [1:0] state, state_next;
-
 reg [word-1:0] round;
-
 reg [8:0] counter, each_byte_zeros;
 parameter [1:0] IDLE = 2'b00;
 parameter [1:0] ACCU = 2'b01;
 parameter [1:0] FINISH = 2'b10;
 parameter [1:0] S0 = 2'b11;
-
-//assign cumulative = (IVALID && !found) ? 1'b1:0;
-//assign finish = ((MODE && found) || (MODE && !IVALID) || (!MODE && round == 4 )) ? 1'b1:0;
 
 // Find zeros of each input byte
 always @* begin	
@@ -37,25 +31,21 @@ always @* begin
 		if (width == 4) begin
 			if (DATA[3] == 1'b1) begin
 				each_byte_zeros = 0;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[2] == 1'b1) begin
 				each_byte_zeros = 1;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[1] == 1'b1) begin
 				each_byte_zeros = 2;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[0] == 1'b1) begin
 				each_byte_zeros = 3;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
@@ -66,49 +56,41 @@ always @* begin
 		end else if (width == 8) begin
 			if (DATA[7] == 1'b1) begin
 				each_byte_zeros = 0;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[6] == 1'b1) begin
 				each_byte_zeros = 1;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[5] == 1'b1) begin
 				each_byte_zeros = 2;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[4] == 1'b1) begin
 				each_byte_zeros = 3;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[3] == 1'b1) begin
 				each_byte_zeros = 4;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[2] == 1'b1) begin
 				each_byte_zeros = 5;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[1] == 1'b1) begin
 				each_byte_zeros = 6;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[0] == 1'b1) begin
 				each_byte_zeros = 7;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
@@ -119,97 +101,81 @@ always @* begin
 		end else if (width == 16) begin
 			if (DATA[15] == 1'b1) begin
 				each_byte_zeros = 0;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[14] == 1'b1) begin
 				each_byte_zeros = 1;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[13] == 1'b1) begin
 				each_byte_zeros = 2;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[12] == 1'b1) begin
 				each_byte_zeros = 3;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[11] == 1'b1) begin
 				each_byte_zeros = 4;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[10] == 1'b1) begin
 				each_byte_zeros = 5;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[9] == 1'b1) begin
 				each_byte_zeros = 6;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[8] == 1'b1) begin
 				each_byte_zeros = 7;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[7] == 1'b1) begin
 				each_byte_zeros = 8;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[6] == 1'b1) begin
 				each_byte_zeros = 9;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[5] == 1'b1) begin
 				each_byte_zeros = 10;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[4] == 1'b1) begin
 				each_byte_zeros = 11;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[3] == 1'b1) begin
 				each_byte_zeros = 12;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[2] == 1'b1) begin
 				each_byte_zeros = 13;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[1] == 1'b1) begin
 				each_byte_zeros = 14;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
 			end else if (DATA[0] == 1'b1) begin
 				each_byte_zeros = 15;
-				//notzero = IVALID ? 1'b1:0;
 				if (IVALID) begin
 					notzero = 1'b1;
 				end
@@ -218,65 +184,10 @@ always @* begin
 			end
 		end
 	end
-
-/*
-	end else if (DATA[7] == 1'b1) begin
-		each_byte_zeros = 0;
-		//notzero = IVALID ? 1'b1:0;
-		if (IVALID) begin
-			notzero = 1'b1;
-		end
-	end else if (DATA[6] == 1'b1) begin
-		each_byte_zeros = 1;
-		//notzero = IVALID ? 1'b1:0;
-		if (IVALID) begin
-			notzero = 1'b1;
-		end
-	end else if (DATA[5] == 1'b1) begin
-		each_byte_zeros = 2;
-		//notzero = IVALID ? 1'b1:0;
-		if (IVALID) begin
-			notzero = 1'b1;
-		end
-	end else if (DATA[4] == 1'b1) begin
-		each_byte_zeros = 3;
-		//notzero = IVALID ? 1'b1:0;
-		if (IVALID) begin
-			notzero = 1'b1;
-		end
-	end else if (DATA[3] == 1'b1) begin
-		each_byte_zeros = 4;
-		//notzero = IVALID ? 1'b1:0;
-		if (IVALID) begin
-			notzero = 1'b1;
-		end
-	end else if (DATA[2] == 1'b1) begin
-		each_byte_zeros = 5;
-		//notzero = IVALID ? 1'b1:0;
-		if (IVALID) begin
-			notzero = 1'b1;
-		end
-	end else if (DATA[1] == 1'b1) begin
-		each_byte_zeros = 6;
-		//notzero = IVALID ? 1'b1:0;
-		if (IVALID) begin
-			notzero = 1'b1;
-		end
-	end else if (DATA[0] == 1'b1) begin
-		each_byte_zeros = 7;
-		//notzero = IVALID ? 1'b1:0;
-		if (IVALID) begin
-			notzero = 1'b1;
-		end
-	end else begin
-		each_byte_zeros = 8;
-	end
-	*/
 end
 
 // DFF as buffer for 'notzero'
 always @(posedge CLK or negedge RST_N) begin
-//always @* begin
 	if (!RST_N) begin
 		found = 0;
 	end else if (IVALID) begin
@@ -289,7 +200,6 @@ always @(posedge CLK or negedge RST_N)
 begin
 	if (!RST_N) begin
 		ZEROS = 0;
-		//if (MODE) begin
 	end else if (IVALID && !found) begin
 		ZEROS = ZEROS + each_byte_zeros;
 	end else begin
@@ -309,7 +219,6 @@ begin
 	end
 end
 
-
 // FSM: State register
 // D-FF with clk, so using 'Nonblocking'
 always @(posedge CLK or negedge RST_N) begin
@@ -322,7 +231,6 @@ end
 
 // FSM: Next State Logic
 // combinational so using 'blocking'
-//always @* begin
 always @(posedge CLK or negedge RST_N) begin
 	case (state)
 		IDLE: begin
@@ -341,13 +249,12 @@ always @(posedge CLK or negedge RST_N) begin
 			end else begin
 				if (MODE) begin
 					if (found && IVALID) begin
-						//ZEROS = counter;
 						OVALID = 1'b1;
 						state_next = FINISH;
 					end else begin
 						state_next = ACCU;
 					end
-				end else begin // mode = 0
+				end else begin // when mode = 0
 					if (round == word) begin
 						state_next = FINISH;
 					end else begin
@@ -358,12 +265,7 @@ always @(posedge CLK or negedge RST_N) begin
 
 		end
 
-		FINISH: begin // initial
-			/*
-			ZEROS = counter;
-			OVALID = 1'b1;
-			state_next = IDLE;
-			*/
+		FINISH: begin // initial some value
 			ZEROS = 0;
 			OVALID = 0;
 			each_byte_zeros = 0;
@@ -373,9 +275,8 @@ always @(posedge CLK or negedge RST_N) begin
 			round = 0;
 			state_next = IDLE;
 		end
-
 		default: begin
-			
+			state_next = IDLE;
 		end
 	endcase
 end
